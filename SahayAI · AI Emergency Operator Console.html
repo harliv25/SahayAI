@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SahayAI · AI Emergency Operator Console for India</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f1ec;--pn:#fff;--ln:#e3ddd3;--tx:#1b1a18;--mu:#7a746a;--ac:#e8730c;--c5:#d92d20;--c4:#f0620a;--c3:#d49a06;--c2:#2e9e5b;--c1:#6b8cae;--sea:#cfe3f1;--land:#eee8dc;--gr:#cfe2c0}
+:root[data-theme="dark"]{--bg:#0d0e10;--pn:#16181b;--ln:#2a2d32;--tx:#ecebe8;--mu:#8d9097;--sea:#0f2231;--land:#1c1e21;--gr:#1d2b1f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0e10;--pn:#16181b;--ln:#2a2d32;--tx:#ecebe8;--mu:#8d9097;--sea:#0f2231;--land:#1c1e21;--gr:#1d2b1f}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.logo{font-weight:800;font-size:21px;letter-spacing:-.5px}.logo b{color:var(--ac)}.tag{color:var(--mu);font-size:12px}.sp{flex:1}
+.st{text-align:right;font-size:11px;color:var(--mu)}.st b{display:block;font-size:16px;color:var(--tx)}
+button{font:inherit;cursor:pointer;border:1px solid var(--ln);background:var(--pn);color:var(--tx);border-radius:8px;padding:6px 10px}
+button:hover{border-color:var(--ac)}button.p{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}button.on{border-color:var(--ac);color:var(--ac);font-weight:600}
+label.sw{font-size:12px;display:flex;gap:6px;align-items:center;cursor:pointer}
+nav{display:flex;gap:6px}
+main{display:grid;grid-template-columns:300px 1fr 400px;gap:12px;padding:12px;height:calc(100vh - 62px);min-height:660px}
+.pn{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:12px;overflow:auto;min-height:0}
+h3{margin:0 0 7px;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--mu)}
+.col{display:flex;flex-direction:column;gap:10px;min-height:0}
+.sc{display:grid;grid-template-columns:1fr 1fr;gap:6px}.sc button{text-align:left;font-size:12px}
+textarea{width:100%;height:52px;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px;font:inherit;resize:none}
+.row{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.row button{flex:1}
+.fl{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}.fl button{padding:3px 8px;font-size:12px;border-radius:99px}
+.q{border:1px solid var(--ln);border-left:4px solid var(--c1);border-radius:8px;padding:7px 10px;margin-bottom:7px;cursor:pointer}
+.q.on{background:var(--bg)}.q small{display:block;color:var(--mu)}.q.dim{opacity:.55}
+.s5{border-left-color:var(--c5)}.s4{border-left-color:var(--c4)}.s3{border-left-color:var(--c3)}.s2{border-left-color:var(--c2)}
+.badge{display:inline-block;border-radius:99px;padding:1px 8px;font-size:11px;font-weight:700;color:#fff;background:var(--c1)}
+.b5{background:var(--c5)}.b4{background:var(--c4)}.b3{background:var(--c3)}.b2{background:var(--c2)}.bf{background:#7b5ea7}
+#map{width:100%;flex:1;border-radius:8px;display:block;min-height:0;background:var(--sea)}
+@keyframes pl{0%{r:2;opacity:.8}100%{r:9;opacity:0}}.pulse{animation:pl 1.6s infinite}
+.tr{max-height:190px;overflow:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.m{padding:6px 10px;border-radius:10px;max-width:92%}.m i{display:block;color:var(--mu);font-size:11px}
+.m.c{background:var(--bg);align-self:flex-start}.m.a{background:color-mix(in srgb,var(--ac) 16%,transparent);align-self:flex-end}
+.m.s{align-self:center;font-size:11px;color:var(--mu);text-align:center;border:1px dashed var(--ln)}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.k{background:var(--bg);border-radius:8px;padding:7px 9px}.k small{color:var(--mu);display:block;font-size:11px}
+.bar{height:6px;border-radius:9px;background:var(--ln);overflow:hidden;margin-top:5px}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--c2),var(--c3),var(--c5));transition:width .5s}
+.stp{display:flex;margin-bottom:10px}.stp div{flex:1;text-align:center;font-size:10px;color:var(--mu)}.stp i{display:block;height:6px;border-radius:9px;background:var(--ln);margin:0 2px 4px}.stp .d{color:var(--tx);font-weight:600}.stp .d i{background:var(--ac)}
+ol{margin:0 0 10px;padding-left:20px}ol li{margin-bottom:4px}
+.ch{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.ch span{background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:3px 8px;font-size:12px}
+.au{background:color-mix(in srgb,var(--c5) 14%,transparent);border:1px solid var(--c5);border-radius:8px;padding:8px;margin-bottom:10px}
+.as{border:1px solid var(--ac);border-radius:10px;padding:9px;margin-bottom:10px}.as q{display:block;margin:4px 0 6px;font-style:normal}
+.ok{color:var(--c2);font-weight:700}.empty{color:var(--mu);text-align:center;padding:28px 10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}.cards .k b{font-size:22px;display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;color:var(--mu);font-size:11px;text-transform:uppercase;padding:6px;border-bottom:1px solid var(--ln)}td{padding:7px 6px;border-bottom:1px solid var(--ln)}tr[data-i]{cursor:pointer}tr[data-i]:hover{background:var(--bg)}
+#dv{display:none;padding:12px}#dv .pn{height:calc(100vh - 86px)}
+@media(max-width:1000px){main{grid-template-columns:1fr;height:auto}#map{height:360px;flex:none}}
+</style></head><body>
+<header>
+<div><div class="logo">Sahay<b>AI</b></div><div class="tag">AI-assisted 112 operator console · India</div></div>
+<nav><button id="t1" class="on">Live</button><button id="t2">Data management</button></nav>
+<div class="sp"></div>
+<label class="sw"><input type="checkbox" id="au" checked> Autonomous dispatch (critical)</label>
+<button id="vo" class="on">🔊 Voice on</button>
+<div class="st"><b id="sQ">0</b>calls</div><div class="st"><b id="sT">–</b>avg triage</div><div class="st"><b id="clk"></b>IST</div>
+<button id="th">Theme</button>
+</header>
+<main id="lv">
+<section class="pn col">
+<div><h3>📡 Incoming mobile calls (tower feed)</h3><div class="sc" id="sc"></div>
+<h3 style="margin-top:10px">Test a report</h3>
+<textarea id="tx" placeholder="Type or speak: “Dadar mein aag lag gayi, bachche andar fase hain”"></textarea>
+<div class="row"><button id="mic">🎙 Speak</button><button class="p" id="go">Triage</button></div></div>
+<div style="min-height:0;overflow:auto"><h3>Queue · critical first, fake / low last</h3>
+<div class="fl" id="fl"></div><div id="ql"></div></div>
+</section>
+<section class="pn col"><div style="display:flex;align-items:center;gap:8px"><h3 style="margin:0;flex:1">Mumbai Metropolitan Region · live map</h3><button id="zr">Full view</button></div>
+<svg id="map" viewBox="0 0 200 140" preserveAspectRatio="xMidYMid meet">
+<rect width="200" height="140" fill="var(--land)"/>
+<path d="M0 0H46L44 22 48 36 44 50 46 62 52 78 54 90 58 104 64 116 66 124 62 140H0Z" fill="var(--sea)"/>
+<path d="M118 140L124 100 132 76 146 56 150 40" stroke="var(--sea)" stroke-width="6" fill="none" stroke-linecap="round"/>
+<path d="M150 0V30L170 40 200 44V0Z" fill="var(--sea)" opacity=".6"/>
+<ellipse cx="76" cy="22" rx="22" ry="14" fill="var(--gr)"/><ellipse cx="100" cy="98" rx="8" ry="5" fill="var(--gr)"/><ellipse cx="160" cy="80" rx="14" ry="10" fill="var(--gr)"/>
+<g stroke="var(--tx)" stroke-opacity=".22" stroke-width="1.1" fill="none" stroke-linecap="round"><path d="M54 0L56 40 58 70 62 92"/><path d="M104 0L108 56 98 80 90 112"/><path d="M52 30L100 22 124 34"/><path d="M96 74L112 56 124 34"/><path d="M56 70L96 74"/><path d="M76 110L110 104 140 100"/><path d="M124 100L150 90"/><path d="M60 92L76 110"/></g>
+<g stroke="var(--mu)" stroke-width=".5" stroke-dasharray="2 1.5" fill="none"><path d="M58 20L62 92 68 108 70 135"/><path d="M120 36L100 74 82 106"/></g>
+<g font-size="2.3" fill="var(--mu)"><text x="57" y="12">Western Express Hwy</text><text x="102" y="14">Eastern Express Hwy</text><text x="72" y="26" fill="#2e7d32">Sanjay Gandhi NP</text><text x="96" y="30" transform="rotate(-6 96 30)">Ghodbunder Rd</text><text x="122" y="126" transform="rotate(-80 122 126)">Thane Creek</text><text x="4" y="70">Arabian Sea</text><text x="102" y="108">Sion–Panvel Hwy</text></g>
+<g id="pl" font-size="3.1" font-weight="600" fill="var(--tx)"></g><g id="fac"></g><g id="dyn"></g></svg>
+<div class="tag">Vector map for offline-safe demo. Production uses Google Maps / MapMyIndia tiles, Street View and live traffic ETA.</div>
+</section>
+<section class="pn" id="rp"></section>
+</main>
+<div id="dv"><div class="pn"><h3>Data management · every call, transcript and decision</h3><div class="cards" id="cd"></div><input id="sr" placeholder="Search location, category, language…" style="width:100%;padding:8px;margin-bottom:10px;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px"><div style="overflow:auto"><table id="tb"></table></div></div></div>
+<script>
+const $=s=>document.querySelector(s),R=n=>Math.floor(Math.random()*n);
+const P={Thane:[124,34],Mulund:[112,56],Ghatkopar:[96,74],Andheri:[56,70],Borivali:[52,40],Bandra:[60,92],Dadar:[68,108],"Navi Mumbai":[140,100],Colaba:[66,132]};
+const FO={H:[8,-6],P:[-7,4],F:[7,7]},FN={H:"🏥",P:"👮",F:"🚒"};
+const F={Thane:["Civil Hospital Thane","Kapurbawdi Police Stn","Thane Fire Stn"],Mulund:["Fortis Hospital Mulund","Mulund Police Stn","Mulund Fire Stn"],Ghatkopar:["Rajawadi Hospital","Ghatkopar Police Stn","Ghatkopar Fire Stn"],Andheri:["Cooper Hospital","Andheri Police Stn","Andheri Fire Stn"],Borivali:["Bhagwati Hospital","Borivali Police Stn","Borivali Fire Stn"],Bandra:["Lilavati Hospital","Bandra Police Stn","Bandra Fire Stn"],Dadar:["Sion Hospital","Dadar Police Stn","Dadar Fire Stn"],"Navi Mumbai":["DY Patil Hospital","Nerul Police Stn","Vashi Fire Stn"],Colaba:["St George Hospital","Colaba Police Stn","Colaba Fire Stn"]};
+const ST=["Received","Triaged","Dispatched","En route","On scene","Resolved"];
+const C={
+accident:{n:"Road accident",u:"108 Ambulance · 100 Police",ic:"🚗",f:"H",e:"🚑",base:3,ask:"Is the injured person breathing, and is anyone trapped in a vehicle?",steps:["Keep the victim still; do not move neck or back","Press a clean cloth firmly on any bleeding","Switch on hazard lights and warn traffic from a safe spot","No water or food. Stay on the line"]},
+fire:{n:"Fire",u:"101 Fire Brigade · 108 Ambulance",ic:"🔥",f:"F",e:"🚒",base:4,ask:"Which floor is burning and is everyone out of the building?",steps:["Get everyone out now; use stairs, never the lift","Stay low under smoke, cover nose with a wet cloth","Close doors behind you; do not go back inside","Cut the main power only if it is safe to reach"]},
+medical:{n:"Medical emergency",u:"108 Advanced Life Support",ic:"🫀",f:"H",e:"🚑",base:4,ask:"Is the patient awake, and are they breathing normally?",steps:["Lay the patient flat; loosen tight clothing","If unresponsive and not breathing: chest compressions, 100–120 per minute","Aspirin only if conscious, chest pain and no allergy","Send someone to the gate to guide the ambulance"]},
+crime:{n:"Crime / personal safety",u:"100 Police · 181 Women helpline",ic:"🛡",f:"P",e:"🚓",base:3,ask:"Are you safe right now, and can you see the person?",steps:["Move to a lit, crowded place or a shop","Share live location with someone you trust","Do not confront; note clothes and vehicle number","Stay on the line; police are on the way"]},
+disaster:{n:"Flood / collapse",u:"112 NDRF · SDRF · 108",ic:"🌊",f:"F",e:"🚒",base:4,ask:"How many people are there, and is anyone injured or unable to move?",steps:["Move to higher ground or top floor","Switch off electricity and gas at the mains","Never walk or drive through moving water","Keep phone, ID and torch with you; signal from a window"]},
+other:{n:"Non-emergency / unclear",u:"No dispatch · log & advise",ic:"📋",f:"P",e:"🚓",base:1,ask:"Can you tell me exactly what help you need?",steps:["No emergency units dispatched","Direct caller to the right civic helpline or local police station","Log call and flag number for repeat-caller review","Re-open instantly if the caller reports danger"]}};
+const CALM={Hindi:"घबराइए मत। मदद रास्ते में है। मैं आपके साथ हूँ।",Marathi:"घाबरू नका. मदत येत आहे. मी तुमच्यासोबत आहे.",Tamil:"பயப்படாதீர்கள். உதவி வருகிறது. நான் உங்களுடன் இருக்கிறேன்.",Hinglish:"Ghabraiye mat. Madad raste mein hai. Main aapke saath hoon.",English:"Stay calm. Help is on the way. I am right here with you."};
+const LC={Hindi:"hi-IN",Marathi:"mr-IN",Tamil:"ta-IN",Hinglish:"en-IN",English:"en-IN",Bengali:"bn-IN"};
+const KW={accident:/accident|crash|takkar|truck|bike|collision|हादसा|टक्कर/i,fire:/\bfire|aag|dhuan|smoke|burn|आग|धुआं/i,medical:/heart|chest|seene|saans|breath|behosh|unconscious|stroke|seizure|delivery|pregnan|दिल|सांस|बेहोश/i,crime:/robb|chori|knife|chaku|gun|follow|harass|chhed|threat|attack|marpeet|चोरी|मारपीट/i,disaster:/flood|baarh|paani bhar|landslide|collapse|imarat|बाढ़|इमारत/i};
+const BOOST=[[/khoon|blood|bleed|खून/i,1],[/behosh|unconscious|not breathing|saans nahi|बेहोश/i,2],[/fase|trapped|stuck|फंस/i,1],[/bachch|child|baby|kid|बच्च/i,1]];
+const SC=[
+{t:"Highway crash · Hindi",loc:"Thane",cat:"accident",sev:5,fake:3,conf:96,lang:"Hindi",emo:[55,78,88,82],lines:[["c","मदद कीजिए! घोड़बंदर रोड पर ट्रक ने बाइक को टक्कर मारी, एक आदमी बेहोश है!","Please help! A truck hit a bike on Ghodbunder Road, a man is unconscious!"],["a","मैं आपके साथ हूँ। क्या वह साँस ले रहा है?","I'm with you. Is he breathing?"],["c","हाँ, पर बहुत खून बह रहा है।","Yes, but he is bleeding heavily."],["a","साफ़ कपड़े से घाव को ज़ोर से दबाइए। एम्बुलेंस रास्ते में है।","Press a clean cloth firmly on the wound. Ambulance is on the way."]],sum:"Two-wheeler hit by truck on Ghodbunder Rd. One adult unconscious, breathing, heavy bleeding. Possible head injury."},
+{t:"Chawl fire · Marathi",loc:"Dadar",cat:"fire",sev:5,fake:2,conf:94,lang:"Marathi",emo:[60,85,92,80],lines:[["c","आग लागली आहे! दादरच्या चाळीत, मुलं आत अडकली आहेत!","Fire! In a Dadar chawl, children are trapped inside!"],["a","शांत राहा. आग कोणत्या मजल्यावर आहे?","Stay calm. Which floor is the fire on?"],["c","पहिल्या मजल्यावर, खूप धूर आहे.","First floor, lots of smoke."],["a","सगळ्यांना बाहेर काढा, खाली वाकून चाला. अग्निशमन दल निघाले आहे.","Get everyone out, stay low. Fire brigade dispatched."]],sum:"Residential chawl fire, first floor, heavy smoke. Minors reported trapped. Narrow lanes may delay engines."},
+{t:"Chest pain · Hinglish",loc:"Andheri",cat:"medical",sev:4,fake:4,conf:91,lang:"Hinglish",emo:[40,62,70,50],lines:[["c","Mere papa ko seene mein bahut dard ho raha hai, Andheri West mein.","My father has severe chest pain, Andheri West."],["a","Main yahin hoon. Kya woh hosh mein hain?","I'm here. Is he conscious?"],["c","Haan, par pasina aa raha hai aur saans phool rahi hai.","Yes, but sweating and short of breath."],["a","Unhe seedha litaiye, kapde dheele kijiye. Ambulance nikal chuki hai.","Lay him flat, loosen clothes. Ambulance dispatched."]],sum:"Elderly male, chest pain with sweating and breathlessness. Suspected cardiac event, conscious."},
+{t:"Waterlogging · Tamil",loc:"Navi Mumbai",cat:"disaster",sev:3,fake:6,conf:84,lang:"Tamil",emo:[45,58,52,40],lines:[["c","வெள்ளம் வீட்டுக்குள் வருது, முதியவர்கள் இருக்காங்க!","Flood water entering the house, elderly people inside!"],["a","எந்த தளத்தில் இருக்கிறீர்கள்?","Which floor are you on?"],["c","தரை தளம், தண்ணீர் முழங்கால் வரை.","Ground floor, knee-deep."],["a","மேல் தளத்துக்குச் செல்லுங்கள், மின்சாரத்தை அணையுங்கள்.","Move upstairs, switch off power."]],sum:"Ground-floor flooding, knee-deep, elderly residents. No injuries reported. Rescue team requested."},
+{t:"Prank call · Hindi",loc:"Mulund",cat:"other",sev:1,fake:94,conf:92,lang:"Hindi",emo:[10,12,8,8],lines:[["c","हेलो? एक पिज़्ज़ा भेज दो। हाहा!","Hello? Send a pizza. Haha!"],["a","यह आपातकालीन लाइन है। क्या आपको मदद चाहिए?","This is the emergency line. Do you need help?"],["c","नहीं, बस मज़ाक कर रहा था।","No, just joking."],["a","कृपया इस लाइन का दुरुपयोग न करें। कॉल दर्ज कर ली गई है।","Please don't misuse this line. Call logged."]],sum:"Caller asked for pizza, laughed, admitted joke. Number has 3 prior prank calls. No dispatch needed."},
+{t:"Streetlight issue · English",loc:"Borivali",cat:"other",sev:2,fake:8,conf:88,lang:"English",emo:[15,18,12,10],lines:[["c","Hi, the streetlight near my building has been off for three days.","Streetlight outside building off for three days."],["a","Thanks for reporting. Is anyone in immediate danger?","Is anyone in immediate danger?"],["c","No, but the lane is very dark at night.","No, but the lane is dark at night."],["a","I'll forward this to the municipal helpline. No emergency unit needed.","Forwarded to the municipal helpline."]],sum:"Civic complaint: dead streetlight, Borivali. No danger. Routed to municipal helpline, no emergency dispatch."}];
+let inc=[],sel=null,cnt=0,filt="All",vOn=true,qs="",sg={},ts=0;
+const OP=["Jio","Airtel","Vi","BSNL"];
+const tower=l=>({tw:`BTS ${l.slice(0,3).toUpperCase()}-${100+R(90)} · ${OP[R(4)]}`,acc:20+R(40),num:`+91 9${R(10)}${R(10)}•• •••${R(10)}${R(10)}${R(10)}`});
+function speak(t,tr,code){if(!vOn||!window.speechSynthesis)return;const v=speechSynthesis.getVoices();const has=code&&v.some(x=>x.lang.replace("_","-").toLowerCase().startsWith(code.slice(0,2)));const u=new SpeechSynthesisUtterance(has?t:(tr||t));u.lang=has?code:"en-IN";u.rate=.95;speechSynthesis.speak(u)}
+function stIdx(i){if(i.closed)return 5;if(i.dAt){const e=(Date.now()-i.dAt)/1000;return e<3?2:e<10?3:e<16?4:5}return i.sev?1:0}
+const prog=i=>i.dAt?Math.min(1,Math.max(0,((Date.now()-i.dAt)/1000-3)/7)):0;
+const fk=i=>i.fake>60,done=i=>stIdx(i)===5;
+function add(o,quiet){const i={id:++cnt,t0:Date.now(),lines:[],emoNow:20,sev:0,fake:0,conf:0,steps:[],auto:null,...o};inc.push(i);if(!quiet)sel=i.id;$("#sQ").textContent=inc.length;if(!quiet)focus();draw();return i}
+function dispatch(i,by){if(i.dAt||i.closed)return;i.dAt=Date.now();i.by=by;i.auto=null;if(sel===i.id)speak("Dispatch confirmed. Units are on the way.");draw()}
+function play(s){const i=add({title:s.t,loc:s.loc,cat:s.cat,lang:"detecting…",sum:"Auto-answering…",emo:s.emo,...tower(s.loc)});
+ i.lines.push(["s",`📡 Incoming via ${i.tw} · caller ${i.num} · location locked ±${i.acc} m · answered by SahayAI`,""]);draw();
+ s.lines.forEach((l,n)=>setTimeout(()=>{i.lines.push(l);i.emoNow=s.emo[n];
+  if(n===1){Object.assign(i,{sev:s.sev,fake:s.fake,conf:s.conf,lang:s.lang,sum:s.sum,steps:C[s.cat].steps,triage:(1.2+Math.random()*1.6).toFixed(1)});
+   if(s.cat==="other")setTimeout(()=>{i.closed=s.fake>60?"Closed · suspected prank":"Routed · civic helpline";i.by="SahayAI (auto)";draw()},3500);
+   else if($("#au").checked&&s.sev>=4&&s.fake<20)i.auto=8}
+  if(l[0]==="a"&&sel===i.id)speak(l[1],l[2],LC[s.lang]);draw()},1700*(n+1)))}
+function classify(t){if(/pizza|haha|joke|prank|mazak|test|मज़ाक/i.test(t)||t.trim().length<10)return{cat:"other",sev:1,fake:90,emo:10};
+ let cat=null;for(const k in KW)if(KW[k].test(t)){cat=k;break}if(!cat)return{cat:"other",sev:2,fake:35,emo:25};
+ let s=C[cat].base;BOOST.forEach(([r,b])=>{if(r.test(t))s+=b});return{cat,sev:Math.min(5,s),fake:5,emo:Math.min(95,40+(t.match(/!/g)||[]).length*10+(/bachao|jaldi|please|help|मदद/i.test(t)?25:0))}}
+function place(t){for(const p in P)if(t.toLowerCase().includes(p.toLowerCase()))return p;const m={"ठाणे":"Thane","दादर":"Dadar","अंधेरी":"Andheri","वाशी":"Navi Mumbai","बांद्रा":"Bandra"};for(const k in m)if(t.includes(k))return m[k];return"Ghatkopar"}
+function custom(t){if(!t.trim())return;const c=classify(t),l=place(t),i=add({title:"Citizen report",loc:l,cat:c.cat,lang:"detecting…",sum:"Analysing…",emo:[c.emo],...tower(l)});
+ i.lines.push(["s",`📡 Incoming via ${i.tw} · caller ${i.num} · location locked ±${i.acc} m`,""],["c",t,""]);draw();
+ setTimeout(()=>{const hi=/[\u0900-\u097F]/.test(t);Object.assign(i,{sev:c.sev,fake:c.fake,conf:80+R(15),emoNow:c.emo,lang:hi?"Hindi":/[\u0B80-\u0BFF]/.test(t)?"Tamil":"English",steps:C[c.cat].steps,triage:"2.1",
+  sum:`${C[c.cat].n} reported near ${l}. Severity ${c.sev}/5 from keywords and distress cues.`});const r="Help is being arranged. Stay on the line and follow the safety steps.";i.lines.push(["a",r,""]);speak(r);
+  if(c.cat==="other")setTimeout(()=>{i.closed="Closed · low priority";i.by="SahayAI (auto)";draw()},2500);else if($("#au").checked&&c.sev>=4&&c.fake<20)i.auto=8;draw()},1500)}
+const rank=i=>(fk(i)?-100:0)+(done(i)?-50:0)+i.sev*10+(i.dAt?0:5);
+const FIL={All:()=>1,Critical:i=>i.sev>=4&&!done(i),Active:i=>!done(i),"Low / fake":i=>i.sev<=2||fk(i),Resolved:done};
+function qDraw(){const L=[...inc].filter(FIL[filt]).sort((a,b)=>rank(b)-rank(a));
+ $("#fl").innerHTML=Object.keys(FIL).map(k=>`<button data-f="${k}" class="${k===filt?"on":""}">${k}</button>`).join("");
+ $("#ql").innerHTML=L.length?L.map(i=>{const s=stIdx(i);return`<div class="q s${i.sev} ${i.id===sel?"on":""} ${fk(i)||done(i)?"dim":""}" data-i="${i.id}"><b>${C[i.cat].ic} ${C[i.cat].n}</b> <span class="badge b${i.sev}">${i.sev?"S"+i.sev:"…"}</span>${fk(i)?' <span class="badge bf">fake?</span>':""}<small>${i.loc} · ${i.lang} · ${i.closed||ST[s]}${i.auto!=null?" · auto in "+i.auto+"s":""}</small></div>`}).join(""):'<div class="empty">No calls match this filter.</div>'}
+function eta(i){return Math.max(1,Math.ceil((1-prog(i))*9))}
+function panel(i){const c=C[i.cat],f=F[i.loc],s=stIdx(i),calm=CALM[i.lang]||CALM.English;
+ return`<h3>Active call · ${i.title}</h3>
+ <div class="k" style="margin-bottom:10px"><small>📡 Mobile tower feed</small><b>${i.tw}</b> · ${i.num}<br><small>Cell-site triangulation ±${i.acc} m · auto-answered, no operator pickup needed</small></div>
+ ${i.closed?`<div class="badge b1" style="margin-bottom:10px">${i.closed}</div>`:`<div class="stp">${ST.map((n,k)=>`<div class="${k<=s?"d":""}"><i></i>${n}</div>`).join("")}</div>`}
+ ${i.dAt&&s<5?`<div class="k" style="margin-bottom:10px">${c.e} Unit ${s<4?"moving · ETA ~"+eta(i)+" min":"on scene, assisting"} · dispatched by ${i.by}</div>`:""}
+ ${i.auto!=null&&!i.dAt?`<div class="au">🤖 SahayAI will auto-dispatch <b>${c.u}</b> in <b>${i.auto}s</b> (confidence ${i.conf}%)<div class="row"><button data-a="now" class="p">Dispatch now</button><button data-a="cancel">Cancel auto</button></div></div>`:""}
+ <div class="tr" id="trn">${i.lines.map(l=>`<div class="m ${l[0]}">${l[1]}${l[2]?`<i>${l[2]}</i>`:""}</div>`).join("")}</div>
+ <div class="g"><div class="k"><small>Language</small><b>${i.lang}</b></div><div class="k"><small>Severity</small><b>${i.sev?i.sev+" / 5":"…"}</b></div>
+ <div class="k"><small>AI confidence</small><b>${i.conf?i.conf+"%":"…"}</b></div><div class="k"><small>Fake-call risk</small><b>${i.sev?i.fake+"%":"…"}</b></div></div>
+ <div class="k" style="margin-bottom:10px"><small>Caller distress</small><b>${i.emoNow>75?"Panic":i.emoNow>50?"Anxious":"Calm"}</b><div class="bar"><span style="width:${i.emoNow}%"></span></div></div>
+ <h3>AI incident brief</h3><p style="margin:0 0 10px">${i.sum}</p>
+ ${i.sev?`<div class="as"><h3>🤖 AI caller assistant</h3><small class="tag">Say now</small><q>${calm}</q><small class="tag">Ask next</small><q>${c.ask}</q>
+ <h3>Precautions for caller</h3><ol>${i.steps.map(x=>`<li>${x}</li>`).join("")}</ol>
+ <div class="row"><button data-a="say">🔊 Say calming line</button><button data-a="read">🔊 Read precautions</button></div></div>
+ <h3>Recommended dispatch</h3><div class="ch"><span>${c.u}</span><span>🏥 ${f[0]}</span><span>👮 ${f[1]}</span><span>🚒 ${f[2]}</span></div>
+ ${i.dAt||i.closed?"":`<div class="row"><button class="p" data-a="now">Accept &amp; dispatch</button><button data-a="esc">Escalate</button><button data-a="rej">Reject / fake</button></div>`}`:""}`}
+function pDraw(){const i=inc.find(z=>z.id===sel);if(!i){$("#rp").innerHTML='<div class="empty">Select or simulate a call to open the cockpit.</div>';return}
+ const k=[i.id,i.lines.length,i.sev,stIdx(i),i.auto,i.closed,i.dAt?Math.ceil(eta(i)):0,i.emoNow].join();if(sg.p===k)return;sg.p=k;$("#rp").innerHTML=panel(i);const t=$("#trn");if(t)t.scrollTop=t.scrollHeight}
+let vb=[0,0,200,140],tv=vb,zr=0;
+function zoomTo(t){tv=t;if(zr)return;zr=setInterval(()=>{vb=vb.map((v,k)=>v+(tv[k]-v)*.25);$("#map").setAttribute("viewBox",vb.join(" "));if(vb.every((v,k)=>Math.abs(v-tv[k])<.15)){clearInterval(zr);zr=0}},30)}
+function focus(){const i=inc.find(z=>z.id===sel);if(!i)return;const[x,y]=P[i.loc];zoomTo([x-35,y-24.5,70,49])}
+function mDraw(){let h="";inc.forEach(i=>{const[x,y]=P[i.loc],col=`var(--c${i.sev||1})`,on=i.id===sel,d=done(i);
+ if(on)h+=`<circle cx="${x}" cy="${y}" r="6" fill="${col}" fill-opacity=".12" stroke="${col}" stroke-width=".3" stroke-dasharray="1 1"/><line x1="${x+10}" y1="${y-8}" x2="${x}" y2="${y}" stroke="var(--ac)" stroke-width=".3" stroke-dasharray="1 1"/><text x="${x+10}" y="${y-8}" font-size="3.4" text-anchor="middle">📡</text>`;
+ h+=`<g data-i="${i.id}" style="cursor:pointer" opacity="${d?.4:1}">${d?"":`<circle class="pulse" cx="${x}" cy="${y}" r="2" fill="${col}"/>`}<circle cx="${x}" cy="${y}" r="${on?3:2.3}" fill="${col}" stroke="#fff" stroke-width=".6"/>${i.sev?`<text x="${x}" y="${y+.9}" font-size="2.4" fill="#fff" text-anchor="middle" font-weight="700">${i.sev}</text>`:""}</g>`;
+ if(i.dAt&&!d){const fc=C[i.cat].f,[a,b]=[x+FO[fc][0]-(x-0)+0,0],p=prog(i),sx=P[i.loc][0]+FO[fc][0],sy=P[i.loc][1]+FO[fc][1],ux=sx+(x-sx)*p,uy=sy+(y-sy)*p;h+=`<line x1="${sx}" y1="${sy}" x2="${x}" y2="${y}" stroke="var(--ac)" stroke-width=".4" stroke-dasharray="1.2 1"/><text x="${ux}" y="${uy+1.5}" font-size="4.6" text-anchor="middle">${C[i.cat].e}</text>`}});
+ $("#dyn").innerHTML=h}
+function sDraw(){let h="",l="";for(const n in P){const[x,y]=P[n];l+=`<text x="${x+3.5}" y="${y+1}">${n}</text>`;for(const k in FO)h+=`<g><circle cx="${x+FO[k][0]}" cy="${y+FO[k][1]}" r="1.7" fill="var(--pn)" stroke="var(--mu)" stroke-width=".3"/><text x="${x+FO[k][0]}" y="${y+FO[k][1]+.8}" font-size="2" text-anchor="middle">${FN[k]}</text></g>`}$("#fac").innerHTML=h;$("#pl").innerHTML=l}
+function dDraw(){const n=inc.length||1,a=inc.filter(i=>i.by&&i.by.includes("auto")&&i.dAt).length,tr=inc.filter(i=>i.triage),av=tr.length?(tr.reduce((s,i)=>s+ +i.triage,0)/tr.length).toFixed(1):"–";
+ $("#cd").innerHTML=[["Total calls",inc.length],["Avg triage",av+"s"],["Auto-dispatched",a],["Fake / low filtered",inc.filter(i=>fk(i)||i.sev<=2).length],["Resolved",inc.filter(done).length]].map(([a,b])=>`<div class="k"><small>${a}</small><b>${b}</b></div>`).join("");
+ const q=qs.toLowerCase();$("#tb").innerHTML="<tr><th>ID</th><th>Time</th><th>Category</th><th>Location</th><th>Language</th><th>Sev</th><th>Fake</th><th>Status</th><th>Handled by</th></tr>"+[...inc].reverse().filter(i=>(C[i.cat].n+i.loc+i.lang).toLowerCase().includes(q)).map(i=>`<tr data-i="${i.id}"><td>#${String(i.id).padStart(3,"0")}</td><td>${new Date(i.t0).toLocaleTimeString("en-IN",{hour12:false})}</td><td>${C[i.cat].ic} ${C[i.cat].n}</td><td>${i.loc}</td><td>${i.lang}</td><td><span class="badge b${i.sev}">${i.sev||"…"}</span></td><td>${i.fake}%</td><td>${i.closed||ST[stIdx(i)]}</td><td>${i.by||"Pending"}</td></tr>`).join("")}
+function draw(){const k=inc.map(i=>i.id+"|"+i.sev+"|"+stIdx(i)+"|"+i.auto+"|"+i.fake).join()+filt+sel;if(sg.q!==k){sg.q=k;qDraw()}pDraw();mDraw();if($("#dv").style.display==="block"&&sg.d!==k+qs+inc.length){sg.d=k+qs+inc.length;dDraw()}
+ const tr=inc.filter(i=>i.triage);$("#sT").textContent=tr.length?(tr.reduce((s,i)=>s+ +i.triage,0)/tr.length).toFixed(1)+"s":"–"}
+function pick(id){sel=+id;sg={};focus();draw()}
+document.addEventListener("pointerdown",e=>{const q=e.target.closest(".q[data-i],#dv tr[data-i]"),m=e.target.closest("g[data-i]"),f=e.target.closest("[data-f]");
+ if(f){filt=f.dataset.f;sg.q=0;draw()}else if(q||m){if(q&&q.closest("#dv"))tab(1);pick((q||m).dataset.i)}});
+$("#rp").onclick=e=>{const a=e.target.dataset.a,i=inc.find(z=>z.id===sel);if(!a||!i)return;
+ if(a==="now")dispatch(i,"Dispatcher");if(a==="cancel"){i.auto=null;draw()}
+ if(a==="esc"){i.esc=1;dispatch(i,"Dispatcher (escalated)")}
+ if(a==="rej"){i.closed="Rejected · flagged fake";i.fake=99;i.by="Dispatcher";draw()}
+ if(a==="say"){speechSynthesis.cancel();speak(CALM[i.lang]||CALM.English,CALM.English,LC[i.lang])}
+ if(a==="read"){speechSynthesis.cancel();speak("Please follow these steps. "+i.steps.join(". "))}};
+$("#sc").innerHTML=SC.map((s,n)=>`<button data-n="${n}">${s.t}</button>`).join("");
+$("#sc").onclick=e=>{if(e.target.dataset.n){speechSynthesis.cancel&&speechSynthesis.cancel();play(SC[e.target.dataset.n])}};
+$("#go").onclick=()=>{custom($("#tx").value);$("#tx").value=""};
+$("#mic").onclick=()=>{const Rr=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Rr){alert("Voice input needs Chrome. Type instead.");return}const r=new Rr();r.lang="hi-IN";r.onresult=e=>custom(e.results[0][0].transcript);r.onend=()=>$("#mic").textContent="🎙 Speak";try{r.start();$("#mic").textContent="Listening…"}catch(e){}};
+$("#vo").onclick=()=>{vOn=!vOn;$("#vo").textContent=vOn?"🔊 Voice on":"🔇 Voice off";$("#vo").className=vOn?"on":"";if(!vOn)speechSynthesis.cancel()};
+$("#th").onclick=()=>{const r=document.documentElement;r.dataset.theme=getComputedStyle(r).getPropertyValue("--bg").trim()==="#0d0e10"?"light":"dark"};
+$("#zr").onclick=()=>zoomTo([0,0,200,140]);$("#sr").oninput=e=>{qs=e.target.value;sg.d=0;draw()};
+function tab(n){$("#lv").style.display=n?"none":"grid";$("#dv").style.display=n?"block":"none";$("#t1").className=n?"":"on";$("#t2").className=n?"on":"";sg.d=0;draw()}
+$("#t1").onclick=()=>tab(0);$("#t2").onclick=()=>tab(1);
+setInterval(()=>{$("#clk").textContent=new Date().toLocaleTimeString("en-IN",{timeZone:"Asia/Kolkata",hour12:false});
+ inc.forEach(i=>{if(i.auto!=null&&!i.dAt){i.auto--;if(i.auto<=0)dispatch(i,"SahayAI (auto)")}});draw()},1000);
+sDraw();
+const sd=(t,l,c,sv,fa,ln,sm,by,dAt,cl)=>add({title:t,loc:l,cat:c,sev:sv,fake:fa,conf:90,lang:ln,sum:sm,by,dAt,closed:cl,steps:C[c].steps,triage:(1.4+Math.random()).toFixed(1),emoNow:30,lines:[["s","Archived call","" ]],...tower(l)},true);
+sd("Seeded · Hindi","Ghatkopar","accident",4,3,"Hindi","Car–auto collision, 2 injured, conscious.","Dispatcher",Date.now()-1500);
+sd("Seeded · English","Bandra","crime",3,5,"English","Phone snatching reported, suspect fled on bike.","SahayAI (auto)",Date.now()-40000);
+sd("Seeded · Hindi","Mulund","other",1,96,"Hindi","Repeat prank number, no emergency.","SahayAI (auto)",0,"Closed · suspected prank");
+sd("Seeded · Marathi","Colaba","medical",2,8,"Marathi","Mild fever advice, redirected to nearby clinic.","SahayAI (auto)",0,"Routed · health advice");
+draw();
+</script></body></html>
