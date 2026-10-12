@@ -89,12 +89,7 @@ SahayAI sits between the caller and the dispatcher:
 SahayAI is a **single self-contained HTML file** with no build step, no dependencies and no backend.
 
 ```bash
-# Option 1: just open it
-open index.html
-
-# Option 2: serve locally (recommended, voice input works best over localhost/https)
-python3 -m http.server 8000
-# then visit http://localhost:8000
+To test the demo : https://harliv25.github.io/SahayAI/
 ```
 
 > **Browser note:** Use **Google Chrome** for voice input (Web Speech API). Text-to-speech works in most modern browsers. Hindi, Marathi and Tamil speech output depends on the voices installed on your device; if none is available, SahayAI falls back to speaking the English translation.
