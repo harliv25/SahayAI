@@ -20,155 +20,198 @@ An AI copilot for India's emergency response. It listens to callers in Hindi, Ma
 
 </div>
 
+# SahayAI 🚨
+
+**An AI-assisted emergency operator console for India's 112 system.**
+
+SahayAI auto-answers incoming emergency calls in the caller's own language, triages them in seconds, filters out prank and low-priority calls, guides the caller with safety steps, and dispatches the nearest ambulance, fire brigade or police unit, either automatically for critical cases or with one click from a human dispatcher.
+
+> *"Sahay" (सहाय) means "help" in Hindi and Marathi.*
+
 ---
 
-## The problem
+## The Problem
 
-When a city has a flood, a fire and a road accident in the same ten minutes, emergency lines queue up and callers wait. Dispatchers must work out who needs help first, in several languages, while taking notes by hand. Seconds lost at triage are seconds lost for the patient.
+India's emergency helplines handle huge call volumes across many languages. Operators lose critical seconds because:
 
-## What DispatchAI does
+- Callers panic and speak in Hindi, Marathi, Tamil, Hinglish or other languages, and an operator may not speak the caller's language.
+- A large share of calls are pranks, test calls or non-emergencies, and they sit in the same queue as real emergencies.
+- Locating the caller and choosing the right nearby unit is done manually.
+- Callers get no guidance while they wait for help to arrive.
 
-| Capability | How it works |
+## The Solution
+
+SahayAI sits between the caller and the dispatcher:
+
+1. **Auto-answers** the call and detects the language.
+2. **Locks location** from the mobile tower feed (cell-site triangulation).
+3. **Triages** the call: category, severity (1 to 5), AI confidence, fake-call risk and caller distress level.
+4. **Talks the caller through it** with a calming line in their language, the next question to ask, and first-aid or safety precautions.
+5. **Prioritises the queue** with critical calls on top and fake or low-priority calls pushed to the bottom.
+6. **Dispatches** the right unit, automatically for critical cases (with a cancel window) or via an Accept & dispatch button.
+7. **Logs everything** (transcript, decision, who handled it) in a searchable data-management view.
+
+---
+
+## Features
+
+| Area | What it does |
 |---|---|
-| **Multilingual voice calls** | The caller speaks Hindi, Marathi or English. The AI replies by voice in the same language and asks the three questions that matter: what happened, where, and how many people are hurt. |
-| **Instant triage** | Classifies the call (fire, medical, road accident, crime, women's safety, flood or disaster) and scores priority from **P1 Critical** to **P4 Low**. |
-| **Distress detection** | Panic words, exclamations and speech rate raise the score, so a terrified caller is not buried under a calm one. |
-| **Location understanding** | Recognises Indian landmarks and cities in English, Hindi and Marathi, geocodes new places with OpenStreetMap, and accepts the caller's GPS. |
-| **Right unit, right number** | Recommends the correct service: 108 ambulance, 101 fire, 100 police, 1091 women's helpline, 1078 disaster response. |
-| **Live map** | Every active incident appears as a priority-coloured pin. |
-| **Real phone line** | Optional Twilio integration: callers dial a real number and appear in the queue within seconds, with a one-tap call-back. |
-| **Smarter triage with Claude** | Optional: add an API key and each caller sentence is analysed by Claude for category, life-threat count, headcount and a one-line brief. |
-| **Human in charge** | The AI only drafts. The dispatcher confirms, edits the category or priority, dispatches, or rejects a false alarm. |
+| 📡 **Tower feed** | Shows BTS ID, operator, masked caller number and location accuracy (± metres) for each call |
+| 🌐 **Multilingual** | Hindi, Marathi, Tamil, Hinglish and English calls, with live English translation under each line |
+| 🧠 **AI triage** | Category, severity (S1 to S5), confidence %, fake-call risk % and a one-paragraph incident brief |
+| 😰 **Distress meter** | Calm / Anxious / Panic indicator that updates as the call progresses |
+| 🤖 **Caller assistant** | A "say now" calming line, an "ask next" question and numbered precautions for the caller |
+| 🔊 **Voice** | Spoken replies using browser text-to-speech, with voice input for test reports |
+| 🚑 **Smart dispatch** | Recommends the nearest hospital, police station and fire station, and animates the unit moving on the map with a live ETA |
+| ⚡ **Autonomous mode** | Calls with severity 4 or above and fake risk under 20% are auto-dispatched after an 8 second countdown, which the operator can cancel or override |
+| 🗑 **Prank filtering** | Suspected pranks and civic complaints are auto-closed or routed to the right helpline without any dispatch |
+| 🗺 **Live map** | Vector map of the Mumbai Metropolitan Region with pulsing incident markers, facility icons and zoom-to-incident |
+| 📊 **Data management** | Every call in a searchable table, with summary cards for total calls, average triage time, auto-dispatched, filtered and resolved |
+| 🌗 **Theme** | Light and dark mode (follows system setting, toggle available) |
+| 📱 **Responsive** | Works on desktop and collapses to a single column on mobile |
 
+### Emergency categories
 
+| Category | Units suggested | Example precautions given |
+|---|---|---|
+| 🚗 Road accident | 108 Ambulance, 100 Police | Keep victim still, press cloth on bleeding |
+| 🔥 Fire | 101 Fire Brigade, 108 Ambulance | Exit via stairs, stay low under smoke |
+| 🫀 Medical | 108 Advanced Life Support | Lay patient flat, CPR guidance if not breathing |
+| 🛡 Crime / personal safety | 100 Police, 181 Women helpline | Move to a crowded lit place, share live location |
+| 🌊 Flood / collapse | 112 NDRF, SDRF, 108 | Move to higher ground, switch off power |
+| 📋 Non-emergency | No dispatch, log and advise | Redirect to civic helpline, flag repeat callers |
 
-## Quick start
+---
 
-You need Node.js 20.12 or newer and Chrome (for speech recognition).
+## Quick Start
+
+SahayAI is a **single self-contained HTML file** with no build step, no dependencies and no backend.
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/dispatchai-india.git
-cd dispatchai-india
-npm install
-npm run dev
+# Option 1: just open it
+open index.html
+
+# Option 2: serve locally (recommended, voice input works best over localhost/https)
+python3 -m http.server 8000
+# then visit http://localhost:8000
 ```
 
-Open **http://localhost:5173** and click **Run a live demo**. Triage, map, location search and voice all work with no API keys.
+> **Browser note:** Use **Google Chrome** for voice input (Web Speech API). Text-to-speech works in most modern browsers. Hindi, Marathi and Tamil speech output depends on the voices installed on your device; if none is available, SahayAI falls back to speaking the English translation.
 
-To try a live call: choose a language, click **Start call**, allow the microphone and say, for example, *"ठाणे स्टेशन के पास आग लगी है"*. If your microphone is unavailable, type in the box instead.
+---
 
-## Architecture
+## How to Demo
 
-```mermaid
-flowchart LR
-  A[Caller on phone] -->|PSTN| T[Twilio Voice]
-  B[Caller in browser] -->|Web Speech API| R
-  T -->|webhooks /voice| S[Node backend]
-  S -->|SSE /api/stream| R[React dashboard]
-  S -.optional.-> C[Claude API]
-  R -.optional /api/triage.-> S
-  R --> N[OpenStreetMap Nominatim]
-  R --> M[Leaflet map tiles]
-  R --> D{{Human dispatcher}}
-```
+1. **Pick a simulated call** from the left panel, for example *Highway crash · Hindi* or *Chawl fire · Marathi*.
+2. Watch the call get auto-answered, the transcript stream in with translations, and the severity, confidence and fake-risk fields fill in.
+3. For critical calls, see the **auto-dispatch countdown**. Let it fire, press **Dispatch now**, or **Cancel auto**.
+4. Follow the dispatched unit moving across the map with its ETA, and watch the status stepper advance from *Received* to *Resolved*.
+5. Try the **Prank call · Hindi** scenario and see it filtered to the bottom of the queue and auto-closed with no dispatch.
+6. Use the **Test a report** box (type or 🎙 speak) to submit your own message, such as:
+   - `Dadar mein aag lag gayi, bachche andar fase hain`
+   - `Andheri mein accident ho gaya, ek aadmi behosh hai, khoon beh raha hai`
+7. Switch to the **Data management** tab to search and review every call.
 
-- **Dashboard** (`src/`): React 18 + Vite. Handles the browser call simulator, queue, incident detail and map.
-- **Backend** (`server/`): a dependency-free Node server. It answers Twilio voice webhooks with TwiML, streams incidents to the dashboard over Server-Sent Events, and optionally calls Claude.
-- **Shared triage engine** (`src/triage.js`): the same code scores calls in the browser and on the phone line.
+### Built-in scenarios
 
-## How triage scores a call
+| Scenario | Language | Location | Severity | Outcome |
+|---|---|---|---|---|
+| Highway crash | Hindi | Thane | 5 | Auto-dispatch ambulance |
+| Chawl fire | Marathi | Dadar | 5 | Auto-dispatch fire brigade |
+| Chest pain | Hinglish | Andheri | 4 | Auto-dispatch ambulance |
+| Waterlogging | Tamil | Navi Mumbai | 3 | Operator decision |
+| Prank call | Hindi | Mulund | 1 | Auto-closed as suspected prank |
+| Streetlight issue | English | Borivali | 2 | Routed to municipal helpline |
 
-```
-score = category base            (fire 65, medical 60, disaster 60, women 60, accident 55, crime 50, other 20)
-      + 14 per life-threat sign  (unconscious, trapped, bleeding, weapon, child, smoke... max 3)
-      + 8 if three or more people are affected
-      + 20% of caller distress   (panic words, "!", fast speech)
+---
 
-P1 Critical  >= 72      P2 High  >= 58      P3 Medium  >= 40      P4 Low  < 40
-```
-
-Keywords cover English, Hindi (Devanagari and Hinglish) and Marathi. When Claude is enabled its output is merged into the same score, so the dispatcher always sees one consistent ranking.
-
-## Configuration
-
-Copy `.env.example` to `.env`. Every variable is optional.
-
-| Variable | Used by | Purpose |
-|---|---|---|
-| `VITE_MAPTILER_KEY` | dashboard | Better map tiles (free key from maptiler.com). Without it, OpenStreetMap tiles are used. |
-| `ANTHROPIC_API_KEY` | backend only | Enables Claude-assisted triage. The key never reaches the browser. |
-| `ANTHROPIC_MODEL` | backend | Model name. Defaults to `claude-sonnet-5-5`. |
-| `PORT` | backend | Backend port. Defaults to `8787`. |
-
-## Take real phone calls with Twilio
-
-1. Create a Twilio account and get a voice number (a trial number works).
-2. Start the backend in a second terminal: `npm run server`
-3. Expose it: `ngrok http 8787` and copy the https URL.
-4. In **Twilio Console → Phone Numbers → your number → Voice**, set *A call comes in* to **Webhook**, method **POST**, URL `https://YOUR-NGROK-URL/voice`.
-5. Call the number. Press **1** for English or **2** for Hindi, then describe an emergency. The incident appears in the queue with its priority, location and a **Call back** button.
-
-Trial accounts can only be called from verified numbers. The phone line currently offers English and Hindi. Marathi is available in the browser.
-
-## Backend API
-
-| Method | Route | Description |
-|---|---|---|
-| `GET` | `/api/health` | `{ ok, llm }`. Tells the dashboard whether the backend and Claude are available. |
-| `GET` | `/api/stream` | Server-Sent Events feed of incidents as they change. |
-| `POST` | `/api/triage` | `{ text }` returns structured triage from Claude (501 if no key is set). |
-| `POST` | `/api/incident` | `{ id, status, ov }` syncs a dispatcher's edits for phone incidents. |
-| `POST` | `/voice` | Twilio entry webhook: language menu. |
-| `POST` | `/voice/lang` | Starts the incident and the first question. |
-| `POST` | `/voice/turn` | Handles each spoken answer and replies with the next question. |
-
-## Project structure
+## How It Works
 
 ```
-dispatchai-india/
-├─ index.html            # loads fonts and Leaflet
-├─ vite.config.js        # dev proxy to the backend
-├─ src/
-│  ├─ App.jsx            # hero, caller simulator, queue, detail, how-it-works
-│  ├─ MapView.jsx        # Leaflet map with priority pins
-│  ├─ triage.js          # categories, scoring, languages, dialogue (shared with backend)
-│  ├─ geo.js             # Nominatim geocoding and reverse geocoding
-│  ├─ main.jsx
-│  └─ styles.css
-├─ server/index.js       # Twilio webhooks, SSE feed, optional Claude triage
-├─ docs/                 # README images
-└─ .env.example
+ Mobile call ──► Tower feed (BTS, location ± m)
+      │
+      ▼
+ Auto-answer ──► Language detection ──► Transcript + translation
+      │
+      ▼
+ Triage engine ──► category · severity · confidence · fake-risk · distress
+      │
+      ├── low / fake ──► auto-close or route to civic helpline
+      │
+      └── real ──► Caller assistant (calming line, next question, precautions)
+                     │
+                     ▼
+            Ranked queue ──► Auto-dispatch (S4+, low fake-risk) or operator click
+                     │
+                     ▼
+            Nearest hospital / police / fire unit ──► Map animation + ETA ──► Resolved
 ```
 
-## Deploy
+### Triage logic (prototype)
 
-```bash
-npm run build
-npm start
+- **Category** is matched from keyword patterns in English, Hinglish and Devanagari (for example `aag`, `accident`, `seene`, `flood`, `आग`, `बाढ़`).
+- **Severity** starts from a base score per category and is boosted by cues such as bleeding, unconsciousness, being trapped, or children involved (capped at 5).
+- **Fake-call risk** is high for very short messages or words like *prank*, *joke*, *pizza*.
+- **Distress** is estimated from exclamation marks and urgent words like *jaldi*, *bachao*, *help*, *मदद*.
+
+### Ranking
+
+The queue is sorted so that critical, un-dispatched calls come first, while resolved calls and suspected fakes sink to the bottom. Filters: **All · Critical · Active · Low / fake · Resolved**.
+
+---
+
+## Tech Stack
+
+- **HTML5, CSS3 and vanilla JavaScript**, with zero dependencies
+- **Inline SVG** for the map, markers, animations and unit movement
+- **Web Speech API** (`speechSynthesis` and `SpeechRecognition`) for voice
+- **CSS variables** for theming, with `prefers-color-scheme` support and safe-area insets for mobile
+
+---
+
+## ⚠️ Prototype Disclaimer
+
+This is a **hackathon demo**. To keep it runnable anywhere offline:
+
+- Calls, tower data, caller numbers and facility names are **simulated**.
+- The triage engine is a **rule-based heuristic**, not a trained model, and it must not be used for real emergencies.
+- The map is a stylised vector map of Mumbai, not real geodata.
+- No data leaves the browser, and nothing is stored after a refresh.
+
+## Roadmap to Production
+
+| Prototype | Production |
+|---|---|
+| Simulated tower feed | Integration with telecom / ERSS-112 location services (cell-site and AML handset location) |
+| Keyword triage | LLM + speech-to-text pipeline with multilingual models for Indian languages |
+| Vector map | Google Maps / MapMyIndia tiles, Street View and live-traffic ETA |
+| Browser TTS | Telephony layer (SIP / WebRTC / Twilio-style voice) for real two-way AI voice |
+| In-memory logs | Secure database, audit trail, role-based access and privacy controls |
+| Static facility list | Live availability of ambulances, fire engines and beds |
+| Fake-call heuristics | Repeat-number detection and call-pattern analysis |
+| Human oversight | Mandatory human-in-the-loop policy, with the auto-dispatch threshold set by authorities |
+
+## Project Structure
+
+```
+.
+├── index.html   # the entire app: markup, styles and logic
+└── README.md
 ```
 
-`npm start` runs the backend, which also serves the built site, so one service (Render, Railway, Fly.io and similar) hosts the dashboard and the phone webhooks at a single URL. Remember to set the Twilio webhook to that URL.
+## Contributing
 
-## Limitations
+Ideas and pull requests are welcome, especially for:
 
-- Triage is keyword-and-score based unless Claude is enabled. It can miss unusual phrasing, so a human always reviews it.
-- Browser speech recognition works best in Chrome and Edge. Marathi and Hindi voice quality depends on the voices installed on the device.
-- Location search covers Latin-script place names through OpenStreetMap, plus a built-in list of major Indian cities and landmarks in three scripts.
-- The phone line stores incidents in memory only. Restarting the backend clears them.
-
-## Roadmap
-
-- [ ] More languages: Tamil, Telugu, Bengali, Gujarati, Kannada
-- [ ] Marathi on the phone line
-- [ ] Persistent storage and dispatcher login
-- [ ] Twilio request-signature validation
-- [ ] Nearest-unit suggestions using live unit locations
-- [ ] Translation of non-English transcripts for dispatchers
-
-## Safety and disclaimer
-
-This is a demonstration project. It is **not connected to India's real 112 service** and must never be used for real emergencies. For any production use you would need request validation, dispatcher authentication, encrypted storage, call-recording consent, and a formal safety review.
+- Additional Indian languages (Bengali, Telugu, Kannada, Gujarati, Punjabi)
+- More incident categories and city maps
+- Accessibility improvements (screen readers, high contrast)
 
 ## License
 
-[MIT](LICENSE)
+Add the license of your choice (for example MIT) before publishing.
+
+---
+
+*Built for a hackathon to show how AI can help emergency responders save critical minutes.*
